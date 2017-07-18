@@ -35,7 +35,7 @@ public class OrderResponse {
     @Override
     public String toString() {
         return "OrderResponse" +
-                "orderId : " + orderId +
+                "\norderId : " + orderId +
                 "\nstatus : " + status +
                 "\nredirectUri : " + redirectUri;
     }

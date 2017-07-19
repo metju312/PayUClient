@@ -13,11 +13,20 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import view.MainWindow;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        AuthorizeResponse authorizeResponse = getAuthorization();
-        orderProducts(authorizeResponse);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                MainWindow.getInstance().setVisible(true);
+            }
+        });
+
+        //AuthorizeResponse authorizeResponse = getAuthorization();
+        //orderProducts(authorizeResponse);
     }
 
     private static void orderProducts(AuthorizeResponse authorizeResponse) throws IOException {
@@ -31,6 +40,9 @@ public class Main {
 
         Gson gson = new Gson();
         String orderRequestJSON = gson.toJson(orderRequest);
+        System.out.println();
+        System.out.println("OrderRequestJSON");
+        System.out.println(orderRequestJSON);
         postRequest.setEntity(new StringEntity(orderRequestJSON));
 
         HttpResponse response = httpClient.execute(postRequest);
@@ -61,7 +73,7 @@ public class Main {
         }
         orderRequest.setProducts(products);
         orderRequest.setTotalAmount(totalAmount);
-        orderRequest.setPayMethod(new PayMethod("PLN", "t"));
+        orderRequest.setPayMethods(new PayMethod("PBL", "t"));
         return orderRequest;
     }
 

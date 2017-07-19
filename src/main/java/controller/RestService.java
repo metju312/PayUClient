@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestService {
-    private void orderProducts(AuthorizeResponse authorizeResponse) throws IOException {
+    public static OrderResponse orderProducts(AuthorizeResponse authorizeResponse, List<Product> productList) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost postRequest = new HttpPost("https://secure.snd.payu.com/api/v2_1/orders");
         postRequest.addHeader("Accept", "application/json");
         postRequest.addHeader("Content-Type", "application/json");
         postRequest.addHeader("Authorization", authorizeResponse.getTokenType() + " " + authorizeResponse.getAccessToken());
-        OrderRequest orderRequest = testOrderRequest();
+        OrderRequest orderRequest = testOrderRequest(productList);
 
 
         Gson gson = new Gson();
@@ -42,29 +42,30 @@ public class RestService {
         OrderResponse orderResponse = mapper.readValue(inputStreamReader, OrderResponse.class);
         System.out.println();
         System.out.println(orderResponse);
+        return orderResponse;
     }
 
-    private static OrderRequest testOrderRequest() {
+    private static OrderRequest testOrderRequest(List<Product> productList) {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setNotifyUrl("http://payuclient.mystore");
         orderRequest.setCustomerIp("127.0.0.1");
         orderRequest.setMerchantPosId("301703");
         orderRequest.setDescription("RTV market");
         orderRequest.setCurrencyCode("PLN");
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product("Wireless Mouse for Laptop", 21000, 1));
-        products.add(new Product("Mouse", 11000, 2));
+//        List<Product> products = new ArrayList<Product>();
+//        products.add(new Product("Wireless Mouse for Laptop", 21000, 1));
+//        products.add(new Product("Mouse", 11000, 2));
         int totalAmount = 0;
-        for (Product product : products) {
+        for (Product product : productList) {
             totalAmount += product.getQuantity()*product.getUnitPrice();
         }
-        orderRequest.setProducts(products);
+        orderRequest.setProducts(productList);
         orderRequest.setTotalAmount(totalAmount);
         orderRequest.setPayMethods(new PayMethod("PBL", "t"));
         return orderRequest;
     }
 
-    private static AuthorizeResponse getAuthorization() throws IOException {
+    public static AuthorizeResponse getAuthorization() throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost postRequest = new HttpPost("https://secure.snd.payu.com/pl/standard/user/oauth/authorize");
         postRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");

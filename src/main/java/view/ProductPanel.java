@@ -19,15 +19,15 @@ public class ProductPanel extends JPanel{
     }
 
     private void setupPanel() {
-        add(new JLabel("Name"));
+        add(new JLabel("Name:"));
         nameTextField = new JTextField(16);
         add(nameTextField);
 
-        add(new JLabel("Unit price"));
+        add(new JLabel("Unit price:"));
         unitPriceTextField = new JTextField(8);
         add(unitPriceTextField);
 
-        add(new JLabel("Quantity"));
+        add(new JLabel("Quantity:"));
         quantityPriceTextField = new JTextField(4);
         add(quantityPriceTextField);
 

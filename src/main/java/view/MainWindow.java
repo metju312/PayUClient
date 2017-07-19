@@ -1,7 +1,10 @@
 package view;
 
+import controller.Product;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MainWindow extends JFrame {
     private static MainWindow instance = null;
@@ -52,8 +55,12 @@ public class MainWindow extends JFrame {
         }
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(640, 500));
+        setPreferredSize(new Dimension(640, 510));
         pack();
         setLocationRelativeTo(null);
+    }
+
+    public List<Product> getProductList(){
+        return productsPanel.getProductList();
     }
 }

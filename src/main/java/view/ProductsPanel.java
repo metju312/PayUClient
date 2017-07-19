@@ -56,10 +56,11 @@ public class ProductsPanel extends JPanel {
         productPanelList.remove(productPanel);
     }
 
-    public void getProductList(){
+    public List<Product> getProductList(){
         List<Product> productList = new ArrayList<Product>();
         for (ProductPanel productPanel : productPanelList) {
             productList.add(productPanel.getProduct());
         }
+        return productList;
     }
 }

@@ -11,7 +11,7 @@ public class OrderRequest {
     private int totalAmount;
     private String extOrderId;
     private List<Product> products;
-    private PayMethod payMethod;
+    private PayMethod payMethods;
 
     public String getNotifyUrl() {
         return notifyUrl;
@@ -77,11 +77,11 @@ public class OrderRequest {
         this.products = products;
     }
 
-    public PayMethod getPayMethod() {
-        return payMethod;
+    public PayMethod getPayMethods() {
+        return payMethods;
     }
 
-    public void setPayMethod(PayMethod payMethod) {
-        this.payMethod = payMethod;
+    public void setPayMethods(PayMethod payMethods) {
+        this.payMethods = payMethods;
     }
 }

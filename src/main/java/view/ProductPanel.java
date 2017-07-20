@@ -3,6 +3,7 @@ package view;
 import controller.Product;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,8 +11,8 @@ public class ProductPanel extends JPanel{
     private ProductsPanel productsPanel;
 
     private JTextField nameTextField;
-    private JTextField unitPriceTextField;
-    private JTextField quantityPriceTextField;
+    private JFormattedTextField unitPriceTextField;
+    private JFormattedTextField quantityPriceTextField;
 
     public ProductPanel(ProductsPanel productsPanel) {
         this.productsPanel = productsPanel;
@@ -24,11 +25,13 @@ public class ProductPanel extends JPanel{
         add(nameTextField);
 
         add(new JLabel("Unit price:"));
-        unitPriceTextField = new JTextField(8);
+        unitPriceTextField = new JFormattedTextField(new Double(0d));
+        unitPriceTextField.setPreferredSize(new Dimension(80, 24));
         add(unitPriceTextField);
 
         add(new JLabel("Quantity:"));
-        quantityPriceTextField = new JTextField(4);
+        quantityPriceTextField = new JFormattedTextField(new Integer(1));
+        quantityPriceTextField.setPreferredSize(new Dimension(60, 24));
         add(quantityPriceTextField);
 
         JButton deleteButton = new JButton("Delete");
@@ -48,7 +51,11 @@ public class ProductPanel extends JPanel{
     public Product getProduct(){
         Product product = new Product();
         product.setName(nameTextField.getText());
-        product.setUnitPrice(Integer.valueOf(unitPriceTextField.getText()));
+
+        String unitPrice = unitPriceTextField.getText();
+        unitPrice = unitPrice.replaceAll(",", "");
+        product.setUnitPrice(Integer.valueOf(unitPrice)*100);
+
         product.setQuantity(Integer.valueOf(quantityPriceTextField.getText()));
         return product;
     }

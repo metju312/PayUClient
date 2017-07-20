@@ -2,6 +2,7 @@ package view;
 
 import controller.AuthorizeResponse;
 import controller.OrderResponse;
+import controller.Product;
 import controller.RestService;
 import net.miginfocom.swing.MigLayout;
 
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class OrderPanel extends JPanel {
     private MainWindow mainWindow;
@@ -67,19 +69,63 @@ public class OrderPanel extends JPanel {
         panel.add(statusLabel, "wrap");
         panel.add(new JLabel("RedirectUri:"));
         panel.add(redirectUriLabel);
+        redirectUriLabel.setForeground(Color.BLUE);
         add(panel, BorderLayout.CENTER);
     }
 
     private void orderProducts() {
+        List<Product> productList = mainWindow.getProductList();
+        if(!validateProducts(productList)){
+            return;
+        }
         try {
             AuthorizeResponse authorizeResponse = RestService.getAuthorization();
-            OrderResponse orderResponse = RestService.orderProducts(authorizeResponse, mainWindow.getProductList());
+            OrderResponse orderResponse = RestService.orderProducts(authorizeResponse, productList);
             orderIdLabel.setText(orderResponse.getOrderId());
             statusLabel.setText(orderResponse.getStatus().getStatusCode());
+            statusLabel.setForeground(Color.GREEN);
             redirectUriLabel.setText(orderResponse.getRedirectUri());
         } catch (IOException e) {
             e.printStackTrace();
+            orderIdLabel.setText("");
+            statusLabel.setText("FAILED");
+            statusLabel.setForeground(Color.RED);
+            redirectUriLabel.setText("");
+            JOptionPane.showMessageDialog(mainWindow, "Order products failed.");
         }
 
     }
+
+    private boolean validateProducts(List<Product> productList) {
+        for (Product product : productList) {
+            //name validation
+            if(product.getName().equals("")){
+                JOptionPane.showMessageDialog(mainWindow, "All products must have name!");
+                return false;
+            }
+
+            //unitPrice validation
+            if(product.getUnitPrice() == null){
+                JOptionPane.showMessageDialog(mainWindow, "All products must have unit price!");
+                return false;
+            }
+            if(product.getUnitPrice() <= 0){
+                JOptionPane.showMessageDialog(mainWindow, "UnitPrice must be larger than 0!");
+                return false;
+            }
+
+            //quantity validation
+            if(product.getQuantity() == null){
+                JOptionPane.showMessageDialog(mainWindow, "All products must have quantity!");
+                return false;
+            }
+            if(product.getQuantity() <= 0){
+                JOptionPane.showMessageDialog(mainWindow, "Quantity must be larger than 0!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }

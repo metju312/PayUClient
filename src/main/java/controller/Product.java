@@ -2,8 +2,8 @@ package controller;
 
 public class Product {
     private String name;
-    private int unitPrice;
-    private int quantity;
+    private Integer unitPrice;
+    private Integer quantity;
 
     public Product() {
     }
@@ -22,19 +22,19 @@ public class Product {
         this.name = name;
     }
 
-    public int getUnitPrice() {
+    public Integer getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(int unitPrice) {
+    public void setUnitPrice(Integer unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }

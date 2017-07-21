@@ -24,7 +24,6 @@ public class RestService {
         postRequest.addHeader("Authorization", authorizeResponse.getTokenType() + " " + authorizeResponse.getAccessToken());
         OrderRequest orderRequest = testOrderRequest(productList);
 
-
         Gson gson = new Gson();
         String orderRequestJSON = gson.toJson(orderRequest);
         System.out.println();
@@ -45,16 +44,13 @@ public class RestService {
         return orderResponse;
     }
 
-    private static OrderRequest testOrderRequest(List<Product> productList) {
+    public static OrderRequest testOrderRequest(List<Product> productList) {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setNotifyUrl("http://payuclient.mystore");
         orderRequest.setCustomerIp("127.0.0.1");
         orderRequest.setMerchantPosId("301703");
         orderRequest.setDescription("RTV market");
         orderRequest.setCurrencyCode("PLN");
-//        List<Product> products = new ArrayList<Product>();
-//        products.add(new Product("Wireless Mouse for Laptop", 21000, 1));
-//        products.add(new Product("Mouse", 11000, 2));
         int totalAmount = 0;
         for (Product product : productList) {
             totalAmount += product.getQuantity()*product.getUnitPrice();
